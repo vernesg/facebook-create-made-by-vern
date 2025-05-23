@@ -7,16 +7,19 @@ import json
 import hashlib
 from faker import Faker
 
+# Enhanced color header
 print(f"""
-┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓           
-> › Github :- @vernesg 
-> › By      :- VRN.ESG
-> › Supported with proxy’s
-┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛                """)
-print('\x1b[38;5;208m⇼'*60)
-print('\x1b[38;5;22m•'*60)
-print('\x1b[38;5;22m•'*60)
-print('\x1b[38;5;208m⇼'*60)
+\x1b[38;5;93m┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓           
+\x1b[38;5;45m> › Github :- \x1b[38;5;198m@vernesg 
+\x1b[38;5;45m> › By      :- \x1b[38;5;198mVRN.ESG
+\x1b[38;5;45m> › Supported with proxy’s
+\x1b[38;5;93m┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛                
+""")
+
+print('\x1b[38;5;39m═' * 60)
+print('\x1b[38;5;40m•' * 60)
+print('\x1b[38;5;40m•' * 60)
+print('\x1b[38;5;39m═' * 60)
 
 def generate_random_string(length):
     letters_and_digits = string.ascii_letters + string.digits
@@ -29,10 +32,10 @@ def get_mail_domains(proxy=None):
         if response.status_code == 200:
             return response.json()['hydra:member']
         else:
-            print(f'[×] E-mail Error : {response.text}')
+            print(f'\x1b[38;5;196m[×] E-mail Error : {response.text}')
             return None
     except Exception as e:
-        print(f'[×] Error : {e}')
+        print(f'\x1b[38;5;196m[×] Error : {e}')
         return None
 
 def create_mail_tm_account(proxy=None):
@@ -53,17 +56,34 @@ def create_mail_tm_account(proxy=None):
             if response.status_code == 201:
                 return f"{username}@{domain}", password, first_name, last_name, birthday
             else:
-                print(f'[×] Email Error : {response.text}')
+                print(f'\x1b[38;5;196m[×] Email Error : {response.text}')
                 return None, None, None, None, None
         except Exception as e:
-            print(f'[×] Error : {e}')
+            print(f'\x1b[38;5;196m[×] Error : {e}')
             return None, None, None, None, None
 
 def register_facebook_account(email, password, first_name, last_name, birthday, proxy=None):
     api_key = '882a8490361da98702bf97a021ddc14d'
     secret = '62f8ce9f74b12f84c123cc23437a4a32'
     gender = random.choice(['M', 'F'])
-    req = {'api_key': api_key,'attempt_login': True,'birthday': birthday.strftime('%Y-%m-%d'),'client_country_code': 'EN','fb_api_caller_class': 'com.facebook.registration.protocol.RegisterAccountMethod','fb_api_req_friendly_name': 'registerAccount','firstname': first_name,'format': 'json','gender': gender,'lastname': last_name,'email': email,'locale': 'en_US','method': 'user.register','password': password,'reg_instance': generate_random_string(32),'return_multiple_errors': True}
+    req = {
+        'api_key': api_key,
+        'attempt_login': True,
+        'birthday': birthday.strftime('%Y-%m-%d'),
+        'client_country_code': 'EN',
+        'fb_api_caller_class': 'com.facebook.registration.protocol.RegisterAccountMethod',
+        'fb_api_req_friendly_name': 'registerAccount',
+        'firstname': first_name,
+        'format': 'json',
+        'gender': gender,
+        'lastname': last_name,
+        'email': email,
+        'locale': 'en_US',
+        'method': 'user.register',
+        'password': password,
+        'reg_instance': generate_random_string(32),
+        'return_multiple_errors': True
+    }
     sorted_req = sorted(req.items(), key=lambda x: x[0])
     sig = ''.join(f'{k}={v}' for k, v in sorted_req)
     ensig = hashlib.md5((sig + secret).encode()).hexdigest()
@@ -73,16 +93,16 @@ def register_facebook_account(email, password, first_name, last_name, birthday, 
     id = reg['new_user_id']
     token = reg['session_info']['access_token']
     print(f'''
------------GENERATED-----------
-EMAIL : {email}
-ID : {id}
-PASSWORD : {password}
-NAME : {first_name} {last_name}
-BIRTHDAY : {birthday} 
-GENDER : {gender}
------------GENERATED-----------
-Token : {token}
------------GENERATED-----------''')
+\x1b[38;5;82m-----------GENERATED-----------
+\x1b[38;5;45mEMAIL     : \x1b[38;5;15m{email}
+\x1b[38;5;45mID        : \x1b[38;5;15m{id}
+\x1b[38;5;45mPASSWORD  : \x1b[38;5;15m{password}
+\x1b[38;5;45mNAME      : \x1b[38;5;15m{first_name} {last_name}
+\x1b[38;5;45mBIRTHDAY  : \x1b[38;5;15m{birthday}
+\x1b[38;5;45mGENDER    : \x1b[38;5;15m{gender}
+\x1b[38;5;82m-----------GENERATED-----------
+\x1b[38;5;45mToken     : \x1b[38;5;15m{token}
+\x1b[38;5;82m-----------GENERATED-----------''')
     open('username.txt', 'a')
 
 def _call(url, params, proxy=None, post=True):
@@ -101,10 +121,10 @@ def test_proxy(proxy, q, valid_proxies):
 def test_proxy_helper(proxy):
     try:
         response = requests.get('https://api.mail.tm', proxies=proxy, timeout=5)
-        print(f'Pass: {proxy}')
+        print(f'\x1b[38;5;46mPass: {proxy}')
         return response.status_code == 200
     except:
-        print(f'Fail: {proxy}')
+        print(f'\x1b[38;5;196mFail: {proxy}')
         return False
 
 def load_proxies():
@@ -131,4 +151,5 @@ def worker_test_proxy(q, valid_proxies):
     while True:
         proxy = q.get()
         if proxy is None:
-     
+            break
+        test_proxy(proxy, q, valid_proxies)
